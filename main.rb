@@ -33,9 +33,9 @@ post "/videos" do
   genre = params[:genre]
   url = params[:url]
   sql = "INSERT INTO videos (title, artist, description, category, genre, url) VALUES (#{sql_string(title)}, #{sql_string(artist)}, #{sql_string(description)}, '#{category}','#{genre}', '#{url}');"
-  @title = run_sql(sql).first
+  @video = run_sql(sql).first
   if request.xhr?
-    json @title
+    json @video
   else
     redirect to("/videos")
   end
@@ -43,8 +43,6 @@ end
 
 # show method (show one video)
 get "/videos/:id" do
-  sql = "UPDATE videos SET views=(views + 1) WHERE id='#{params[:id]}';"
-  run_sql(sql)
   sql = "SELECT * FROM videos WHERE id=#{params[:id]}"
   @video = run_sql(sql).first
   erb :show
@@ -66,7 +64,7 @@ post "/videos/:id" do
   genre = params[:genre]
   url = params[:url]
 
-  sql = "UPDATE videos SET artist=#{sql_string(artist)}, title=#{sql_string(title)}, description=#{sql_string(description)}, url='#{url}', category='#{category}', genre='#{genre}' WHERE id='#{params[:id]}';"
+  sql = "UPDATE videos SET title=#{sql_string(title)}, artist=#{sql_string(artist)}, description=#{sql_string(description)}, url='#{url}', category='#{category}', genre='#{genre}' WHERE id='#{params[:id]}';"
   run_sql(sql)
   redirect to("/videos")
 end

@@ -1,13 +1,12 @@
 DROP TABLE videos;
-
 CREATE TABLE videos (
   id serial8 primary key,
-  artist varchar(100),
   title varchar(100),
+  artist varchar(100),
   description text,
   category varchar(100),
   genre varchar(100),
-  url text,
+  url text
 );
 
 -- Music
