@@ -33,11 +33,8 @@ function createVideo() {
     dataType: 'json',
     data: {title: title, artist: artist, description: description, category: category, genre: genre, url: url}
   }).done(function(data) {
-    console.log('hello')
-    // appendNewVideo(data);
-    // $('main').empty();
-    // $('#new-todo').val('');
-    // getVideos();
+    appendNewVideo(data);
+    getVideos();
   })
 }
 
@@ -48,15 +45,7 @@ function displayVideo() {
     url: '/videos/' + videoId,
     dataType: 'json'
   }).done(function(data) {
-    $('main').empty();
-    $('#new-todo').val('');
-    $('main').append('<div><iframe src="' + data.url + '" class="show-page-vid"></iframe></div>' +
-      '<p>' + data.title + '</p>' +
-      '<p>' + data.genre + '</p>' +
-      '<p>' + data.description + '</p>' +
-      '<button class="show-buttons" id="edit-button" data-id="' + data.id + '">Edit</button>' +
-      '<button class="show-buttons" id="delete-button" data-id="' + data.id + '">Delete</button>');
-  })
+  }
 }
 
 function editVideo() {
