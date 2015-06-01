@@ -24,7 +24,7 @@ get "/videos/new" do
   if request.xhr?
     json [{status: :ok}]
   else
-    erb :index
+    erb :new
   end
 end
 
