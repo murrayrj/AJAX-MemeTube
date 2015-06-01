@@ -21,7 +21,11 @@ end
 
 # new method (create step 1/2)
 get "/videos/new" do
-  erb :new
+  if request.xhr?
+    json [{status: :ok}]
+  else
+    erb :index
+  end
 end
 
 # create method (step 2/2)
@@ -41,18 +45,27 @@ post "/videos" do
   end
 end
 
+
 # show method (show one video)
 get "/videos/:id" do
   sql = "SELECT * FROM videos WHERE id=#{params[:id]}"
   @video = run_sql(sql).first
-  erb :show
+  if request.xhr?
+    json @video
+  else
+    erb :show
+  end
 end
 
 # edit method (step 1/2)
 get "/videos/:id/edit" do
   sql = "SELECT * FROM videos WHERE id=#{params[:id]}"
   @video = run_sql(sql).first
-  erb :edit
+  if request.xhr?
+    json @video
+  else
+    erb :edit
+  end
 end
 
 # update method (step 2/2)
@@ -63,17 +76,25 @@ post "/videos/:id" do
   category = params[:category]
   genre = params[:genre]
   url = params[:url]
-
   sql = "UPDATE videos SET title=#{sql_string(title)}, artist=#{sql_string(artist)}, description=#{sql_string(description)}, url='#{url}', category='#{category}', genre='#{genre}' WHERE id='#{params[:id]}';"
-  run_sql(sql)
-  redirect to("/videos")
+  @video = run_sql(sql)
+  if request.xhr?
+    json @video
+  else
+    redirect to ("/videos")
+  end
 end
+
 
 # delete method
 get "/videos/:id/delete" do
   sql = "DELETE FROM videos where id=#{params[:id]}"
   run_sql(sql)
-  redirect to("/videos")
+  if request.xhr?
+    json [{status: :ok}]
+  else
+    redirect to("/videos")
+  end
 end
 
 private
